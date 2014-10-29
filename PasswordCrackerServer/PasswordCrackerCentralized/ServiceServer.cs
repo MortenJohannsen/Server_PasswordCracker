@@ -76,13 +76,31 @@ namespace PasswordCrackerCentralized
             sr = new StreamReader(ns);
             sw = new StreamWriter(ns);
             sw.AutoFlush = true; //Enable automatic flushing
+
+
+            List<string> PasswordsRecieved = new List<string>();
+            bool x = true;
+            while (x)
+            {
+                string recieved = sr.ReadLine();
+                PasswordsRecieved.Add(recieved);
+                Console.WriteLine(recieved);
+                if (recieved == "per:AXPaVO/3DmqNsW2uPJw9ZJxf9lc=")
+                {
+                    x = false;
+                }
+            }
+
+            File.WriteAllLines("passwords.txt", PasswordsRecieved.ToArray());
             
 
 
-            string messagerecieved = sr.ReadLine();
-            File.WriteAllText("passwords.txt", messagerecieved);
 
-            Console.WriteLine("--- File Recieved --- " + messagerecieved);
+            //string messagerecieved = sr.ReadLine();
+
+            //File.WriteAllText("passwords.txt", messagerecieved);
+
+            //Console.WriteLine("--- File Recieved --- " + messagerecieved);
             
             Console.WriteLine("Run Cracker...");
             crackService.RunCracking();

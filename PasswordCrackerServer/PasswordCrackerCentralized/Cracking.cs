@@ -57,9 +57,16 @@ namespace PasswordCrackerCentralized
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
         }
 
-        private void WriteResultToFIle(List<UserInfoClearText> result)
+        public void WriteResultToFIle(List<UserInfoClearText> result)
         {
-            File.WriteAllText("password_results.txt", result.ElementAt(0).ToString());
+
+            string a = "";
+            foreach (var text in result)
+            {
+                a = a + " - Brugernavn: " + text.UserName + " - Password: " + text.Password;
+            }
+
+            File.WriteAllText("password_results.txt", a);
 
         }
         
