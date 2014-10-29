@@ -9,16 +9,21 @@ namespace PasswordCrackerCentralized
         static void Main()
         {
             int _port = 65080;
-            IPAddress _ip = IPAddress.Parse("10.154.1.247");
+            IPAddress _ip = IPAddress.Parse("10.154.2.115");
 
             Console.WriteLine("--- Waiting for Connection ---");
 
             TcpListener server = new TcpListener(_ip, _port);
             server.Start();
 
+            ServiceServer service = new ServiceServer(server.AcceptTcpClient());
+            service.GetDictionary();
+            server.Stop();
+
+            server.Start();
             while (true)
             {
-                ServiceServer service = new ServiceServer(server.AcceptTcpClient());
+                service = new ServiceServer(server.AcceptTcpClient());
 
                 service.DoTheCracking();
 

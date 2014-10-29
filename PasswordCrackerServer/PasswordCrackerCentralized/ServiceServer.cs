@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PasswordCrackerCentralized
@@ -28,6 +30,40 @@ namespace PasswordCrackerCentralized
             Console.WriteLine("\n--- Server Activated ---");
             crackService = new Cracking();
         }
+
+        public void GetDictionary()
+        {
+            ns = connectionSocket.GetStream();
+            sr = new StreamReader(ns);
+            sw = new StreamWriter(ns);
+            sw.AutoFlush = true; //Enable automatic flushing
+
+
+            List<string> DictionaryRecieved = new List<string>();
+            bool x = true;
+            while (x)
+            {
+               string recieved = sr.ReadLine();
+                DictionaryRecieved.Add(recieved);
+                Console.WriteLine(recieved);
+                if (recieved == "kernel")
+                {
+                    x = false;
+                }
+            }
+            
+            File.WriteAllLines("webster.txt", DictionaryRecieved.ToArray());
+
+            Console.WriteLine("--- File Recieved --- " + DictionaryRecieved);
+
+            
+
+            Console.WriteLine("\n--- Closing connection ---");
+
+            ns.Close();
+            connectionSocket.Close();
+        }
+
 
 
         /// <summary>
